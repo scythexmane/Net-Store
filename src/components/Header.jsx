@@ -1,25 +1,81 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
+  const location = useLocation();
+
   return (
-    <div className="bg-white shadow-sm px-6 py-4 flex items-center justify-between">
-      <div className="font-bold text-xl text-black">BrandLogo</div>
-      <nav className="hidden md:flex space-x-6">
-        <a href="#" className="text-black font-medium border-b-2 border-black pb-1">Bosh sahifa</a>
-        <a href="#" className="text-gray-700 hover:text-black">Katalog</a>
-        <a href="#" className="text-gray-700 hover:text-black">Haqimizda</a>
-        <a href="#" className="text-gray-700 hover:text-black">Aloqa</a>
-      </nav>
-      <div className="flex items-center space-x-3">
-        <input
-          type="text"
-          placeholder="Siz nima qidiryapsiz?"
-          className="border border-gray-300 px-4 py-2 rounded-md text-sm w-[250px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button className="flex items-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm">
-          📞 Aloqaga chiqish
-        </button>
+    <header className="bg-white shadow-md py-4">
+      <div className="max-w-[1440px] mx-auto px-6 flex items-center justify-between">
+        {/* Логотип */}
+        <div className="text-2xl font-bold text-black">
+          <Link to="/">BrandLogo</Link>
+        </div>
+
+        {/* Навигация */}
+        <nav className="flex space-x-6">
+          <Link
+            to="/"
+            className={`text-black hover:text-blue-500 transition ${
+              location.pathname === '/' ? 'border-b-2 border-blue-500' : ''
+            }`}
+          >
+            Bosh sahifa
+          </Link>
+          <Link
+            to="/catalog"
+            className={`text-black hover:text-blue-500 transition ${
+              location.pathname === '/catalog' ? 'border-b-2 border-blue-500' : ''
+            }`}
+          >
+            Katalog
+          </Link>
+          <Link
+            to="/about"
+            className={`text-black hover:text-blue-500 transition ${
+              location.pathname === '/about' ? 'border-b-2 border-blue-500' : ''
+            }`}
+          >
+            Haqimizda
+          </Link>
+          <Link
+            to="/contact"
+            className={`text-black hover:text-blue-500 transition ${
+              location.pathname === '/contact' ? 'border-b-2 border-blue-500' : ''
+            }`}
+          >
+            Aloqa
+          </Link>
+        </nav>
+
+        {/* Поиск и кнопка */}
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Sizni qidiryapsiz?"
+              className="border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <svg
+              className="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+          </div>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 transition">
+            Aloqaga chiqish
+          </button>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }

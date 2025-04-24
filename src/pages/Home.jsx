@@ -11,6 +11,9 @@ import NewProducts from '../components/NewProducts.jsx';
 import AllProducts from '../components/AllProducts.jsx';
 import Service from '../components/Service.jsx';
 import Footer from '../components/Footer.jsx';
+import ContactPage from '../pages/Contact.jsx';
+import AboutPage from './About.jsx';
+import CatalogPage from './CatalogPage.jsx';
 
 function HomePage() {
   return (
@@ -34,6 +37,10 @@ function HomePage() {
             }
           />
           <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          
         </Routes>
 
       </div>
