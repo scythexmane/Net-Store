@@ -2,11 +2,21 @@ import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function PopularProducts() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Инициализация AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Длительность анимации (1 секунда)
+      once: true, // Анимация срабатывает только один раз при скролле
+    });
+  }, []);
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products?limit=8&offset=4')
@@ -40,6 +50,26 @@ export default function PopularProducts() {
     arrows: true,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   if (error) return <div className="text-center text-red-500 p-6">Error: {error}</div>;
@@ -48,25 +78,36 @@ export default function PopularProducts() {
   return (
     <div className="bg-white p-6 mx-6 mt-6 relative">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-black">OMMABOP MAHSULOTLAR</h2>
+        <h2 className="text-xl font-bold text-black" data-aos="fade-up">
+          OMMABOP MAHSULOTLAR
+        </h2>
       </div>
       <Slider {...settings}>
-        {products.map((product) => (
+        {products.map((product, index) => (
           <motion.div
             key={product.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="p-2"
+            data-aos="zoom-in"
+            data-aos-delay={index * 100} // Задержка для каждой карточки (0ms, 100ms, 200ms и т.д.)
           >
             <div
               className="bg-white border border-gray-200 rounded-lg p-4 text-center cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-lg"
               onClick={() => navigate(`/product/${product.id}`)}
             >
-              <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">-{Math.floor(Math.random() * 20 + 10)}%</span>
+              <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+                -{Math.floor(Math.random() * 20 + 10)}%
+              </span>
               <button className="absolute top-2 right-2">
                 <svg className="w-5 h-5" fill="none" stroke="gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 016.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"></path>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 016.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"
+                  ></path>
                 </svg>
               </button>
               <img src={product.image} alt={product.title} className="w-32 h-32 mx-auto mb-2 object-contain" />

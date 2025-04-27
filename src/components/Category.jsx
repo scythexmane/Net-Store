@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Slider from 'react-slick';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 // Кастомные стрелки для слайдера
 function PrevArrow(props) {
@@ -31,6 +33,14 @@ function NextArrow(props) {
 }
 
 export default function Categories() {
+  // Инициализация AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Длительность анимации (1 секунда)
+      once: true, // Анимация срабатывает только один раз при скролле
+    });
+  }, []);
+
   const categories = [
     {
       name: 'Telefon',
@@ -84,30 +94,30 @@ export default function Categories() {
   ];
 
   const settings = {
-    dots: false, // Отключаем индикаторы (точки)
-    infinite: true, // Бесконечная прокрутка
-    speed: 500, // Скорость анимации
-    slidesToShow: 6, // Показываем 6 карточек
-    slidesToScroll: 1, // Прокручиваем по 1 карточке
-    prevArrow: <PrevArrow />, // Кастомная стрелка "назад"
-    nextArrow: <NextArrow />, // Кастомная стрелка "вперёд"
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
     responsive: [
       {
-        breakpoint: 1024, // На экранах меньше 1024px
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 4, // Показываем 4 карточки
+          slidesToShow: 4,
         },
       },
       {
-        breakpoint: 768, // На экранах меньше 768px
+        breakpoint: 768,
         settings: {
-          slidesToShow: 3, // Показываем 3 карточки
+          slidesToShow: 3,
         },
       },
       {
-        breakpoint: 480, // На экранах меньше 480px
+        breakpoint: 480,
         settings: {
-          slidesToShow: 2, // Показываем 2 карточки
+          slidesToShow: 2,
         },
       },
     ],
@@ -115,13 +125,18 @@ export default function Categories() {
 
   return (
     <div className="mt-10">
-      <h2 className="text-2xl font-bold text-black mb-6">Kataloglar</h2>
+      <h2 className="text-2xl font-bold text-black mb-6" data-aos="fade-up">
+        Kataloglar
+      </h2>
       <Slider {...settings}>
         {categories.map((category, index) => (
-          <div key={index} className="p-2">
-            <div
-              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md hover:bg-blue-500 hover:text-white transition group"
-            >
+          <div
+            key={index}
+            className="p-2"
+            data-aos="zoom-in"
+            data-aos-delay={index * 100} // Задержка для каждой карточки (0ms, 100ms, 200ms и т.д.)
+          >
+            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md hover:bg-blue-500 hover:text-white transition group">
               <div className="text-black group-hover:text-white transition">
                 {category.icon}
               </div>

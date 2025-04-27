@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import Frame1 from '../assets/1.png'; // PlayStation
 import Frame2 from '../assets/2.png'; // Women
@@ -6,13 +8,23 @@ import Frame3 from '../assets/3.png'; // Speakers
 import Frame4 from '../assets/4.png'; // Perfume
 
 export default function NewProducts() {
+  // Инициализация AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Длительность анимации (1 секунда)
+      once: true, // Анимация срабатывает только один раз при скролле
+    });
+  }, []);
+
   return (
     <div className="mt-10 flex flex-col items-center gap-6">
-      <h2 className="text-2xl font-bold text-black text-center">Yangi mahsulotlar</h2>
+      <h2 className="text-2xl font-bold text-black text-center" data-aos="fade-up">
+        Yangi mahsulotlar
+      </h2>
 
       <div className="flex gap-4 items-start justify-center">
         {/* Left - PlayStation */}
-        <div className="relative w-[599px] h-[584px] rounded-xl overflow-hidden group">
+        <div className="relative w-[599px] h-[584px] rounded-xl overflow-hidden group" data-aos="fade-right">
           <img
             src={Frame1}
             alt="PlayStation 5"
@@ -28,7 +40,7 @@ export default function NewProducts() {
         {/* Right block */}
         <div className="flex flex-col gap-4">
           {/* Women’s Collection */}
-          <div className="relative w-[582px] h-[284px] rounded-xl overflow-hidden group">
+          <div className="relative w-[582px] h-[284px] rounded-xl overflow-hidden group" data-aos="fade-left">
             <img
               src={Frame2}
               alt="Women’s Collection"
@@ -43,11 +55,16 @@ export default function NewProducts() {
 
           {/* Speakers & Perfume */}
           <div className="flex gap-4 justify-center">
-            {[ 
+            {[
               { img: Frame3, title: "Speakers", desc: "Amazon wireless speakers" },
-              { img: Frame4, title: "Perfume", desc: "GUCCI INTENSE OUD EDP" }
+              { img: Frame4, title: "Perfume", desc: "GUCCI INTENSE OUD EDP" },
             ].map((item, index) => (
-              <div key={index} className="relative w-[280px] h-[284px] rounded-xl overflow-hidden group">
+              <div
+                key={index}
+                className="relative w-[280px] h-[284px] rounded-xl overflow-hidden group"
+                data-aos="fade-left"
+                data-aos-delay={index * 100} // Задержка для каждой карточки (0ms, 100ms)
+              >
                 <img
                   src={item.img}
                   alt={item.title}

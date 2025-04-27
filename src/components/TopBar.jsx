@@ -1,8 +1,8 @@
 import React from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import { useTranslation } from 'react-i18next';
 
 export default function TopBar() {
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <div className="bg-black text-white py-2">
@@ -23,16 +23,6 @@ export default function TopBar() {
             ></path>
           </svg>
           <p className="text-sm">{t('topbar_message')}</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="bg-transparent text-white text-sm focus:outline-none"
-          >
-            <option value="uz" className="text-black">{t('language_uz')}</option>
-            <option value="ru" className="text-black">{t('language_ru')}</option>
-          </select>
         </div>
       </div>
     </div>
