@@ -14,6 +14,42 @@ export default function Header() {
           <Link to="/">BrandLogo</Link>
         </div>
 
+        {/* Навигация для больших экранов */}
+        <nav className="hidden lg:flex space-x-4 xl:space-x-6">
+          <Link
+            to="/"
+            className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+              location.pathname === '/' ? 'border-blue-500' : 'border-transparent'
+            } pb-1 lg:pb-0`}
+          >
+            Bosh sahifa
+          </Link>
+          <Link
+            to="/catalog"
+            className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+              location.pathname === '/catalog' ? 'border-blue-500' : 'border-transparent'
+            } pb-1 lg:pb-0`}
+          >
+            Katalog
+          </Link>
+          <Link
+            to="/about"
+            className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+              location.pathname === '/about' ? 'border-blue-500' : 'border-transparent'
+            } pb-1 lg:pb-0`}
+          >
+            Haqimizda
+          </Link>
+          <Link
+            to="/contact"
+            className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+              location.pathname === '/contact' ? 'border-blue-500' : 'border-transparent'
+            } pb-1 lg:pb-0`}
+          >
+            Aloqa
+          </Link>
+        </nav>
+
         {/* Бургер-меню для мобильных */}
         <button
           className="lg:hidden flex items-center justify-center w-10 h-10 focus:outline-none"
@@ -35,7 +71,7 @@ export default function Header() {
           </svg>
         </button>
 
-        {/* Навигация с анимацией */}
+        {/* Навигация с анимацией для мобильных */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.nav
@@ -43,11 +79,10 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="lg:flex flex-col lg:flex-row absolute lg:static top-0 right-0 w-64 lg:w-auto h-screen lg:h-auto bg-white lg:bg-transparent shadow-lg lg:shadow-none px-4 py-6 lg:p-0 space-y-4 lg:space-y-0 lg:space-x-4 xl:space-x-6 z-20"
+              className="lg:hidden flex flex-col absolute top-0 right-0 w-64 h-screen bg-white shadow-lg px-4 py-6 space-y-4 z-20"
             >
-              {/* Кнопка закрытия внутри меню */}
               <button
-                className="lg:hidden flex items-center justify-end w-full mb-4 focus:outline-none"
+                className="flex items-center justify-end w-full mb-4 focus:outline-none"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <svg
@@ -69,36 +104,36 @@ export default function Header() {
               <div className="flex flex-col space-y-4">
                 <Link
                   to="/"
-                  className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+                  className={`text-sm sm:text-base text-black hover:text-blue-500 transition border-b-2 ${
                     location.pathname === '/' ? 'border-blue-500' : 'border-transparent'
-                  } pb-1 lg:pb-0`}
+                  } pb-1`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Bosh sahifa
                 </Link>
                 <Link
                   to="/catalog"
-                  className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+                  className={`text-sm sm:text-base text-black hover:text-blue-500 transition border-b-2 ${
                     location.pathname === '/catalog' ? 'border-blue-500' : 'border-transparent'
-                  } pb-1 lg:pb-0`}
+                  } pb-1`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Katalog
                 </Link>
                 <Link
                   to="/about"
-                  className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+                  className={`text-sm sm:text-base text-black hover:text-blue-500 transition border-b-2 ${
                     location.pathname === '/about' ? 'border-blue-500' : 'border-transparent'
-                  } pb-1 lg:pb-0`}
+                  } pb-1`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Haqimizda
                 </Link>
                 <Link
                   to="/contact"
-                  className={`text-sm sm:text-base lg:text-lg text-black hover:text-blue-500 transition border-b-2 ${
+                  className={`text-sm sm:text-base text-black hover:text-blue-500 transition border-b-2 ${
                     location.pathname === '/contact' ? 'border-blue-500' : 'border-transparent'
-                  } pb-1 lg:pb-0`}
+                  } pb-1`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Aloqa
