@@ -85,9 +85,12 @@ export default function Footer() {
           {/* Колонка 2: Aloqa */}
           <div>
             <h3 className="text-xl font-bold mb-4 transition-transform duration-300 hover:scale-105">Aloqa</h3>
-            <p className="text-sm text-gray-400 mb-2 hover:text-blue-400 transition-colors duration-300 cursor-pointer">
-              Manzil: Toshkent sh
-            </p>
+            <a
+              href="https://maps.app.goo.gl/qimJwUxurSvhSeFo6"
+              className="text-sm text-gray-400 mb-2 block hover:text-blue-400 hover:underline transition-colors duration-300"
+            >
+              Manzil:Toshkent
+            </a>
             <a
               href="mailto:qwertyui@gmail.com"
               className="text-sm text-gray-400 mb-2 block hover:text-blue-400 hover:underline transition-colors duration-300"
@@ -107,13 +110,13 @@ export default function Footer() {
             <h3 className="text-xl font-bold mb-4 transition-transform duration-300 hover:scale-105">Haqimizda</h3>
             <p className="text-sm text-gray-400">
               <a
-                href="/privacy"
+                href="#"
                 className="hover:text-blue-400 hover:underline transition-colors duration-300 block mb-1"
               >
                 Maxfiylik siyosati va shaxsiy ma'lumotlarni himoya qilish
               </a>
               <a
-                href="/returns"
+                href="#"
                 className="hover:text-blue-400 hover:underline transition-colors duration-300 block"
               >
                 Mahsulotlarni va to'lovlarni qaytarish siyosati
