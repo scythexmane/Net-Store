@@ -51,7 +51,7 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-200px)] px-4 sm:px-6 lg:px-8 py-8 bg-gradient-to-b from-gray-50 to-gray-100 relative overflow-x-hidden">
+    <div className="min-h-[calc(100vh-200px)] px-4 sm:px-6 lg:px-8 py-8 bg-gradient-to-b from-white to-white relative overflow-x-hidden">
       {/* Уведомление об успешной покупке */}
       <AnimatePresence>
         {showSuccess && (
