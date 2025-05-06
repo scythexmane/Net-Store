@@ -23,7 +23,7 @@ function HomePage() {
       <CartProvider>
         <TopBar />
         <Header />
-        <div className="max-w-[1440px] mx-auto px-6">
+        <div className="max-w-[1440px] mx-auto  flex-grow pt-6 sm:pt-8 lg:pt-10 px-4 sm:px-6 lg:px-8">
           <Routes>
             <Route
               path="/"
