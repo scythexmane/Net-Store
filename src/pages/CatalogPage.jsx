@@ -1,200 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProductCard from '../components/ProductCard';
+import { fetchProducts, formatPrice } from '../data/products';
 
 export default function CatalogPage() {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [category, setCategory] = useState('all');
+  const [maxPrice, setMaxPrice] = useState(10000000);
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [priceRange, setPriceRange] = useState([0, 10000000]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [categories, setCategories] = useState(['All']);
+  const [error, setError] = useState('');
 
-  // Загрузка продуктов и извлечение категорий
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        if (!response.ok) {
-          throw new Error('Mahsulotlar yuklanmadi');
-        }
-        const data = await response.json();
-        const formattedProducts = data.map((item) => ({
-          id: item.id,
-          name: item.title,
-          price: Math.round(item.price * 12000),
-          image: item.image,
-          category: item.category,
-        }));
-        setProducts(formattedProducts);
-        setFilteredProducts(formattedProducts);
-
-        // Извлекаем уникальные категории
-        const uniqueCategories = ['All', ...new Set(formattedProducts.map((item) => item.category))];
-        setCategories(uniqueCategories);
-
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
+    fetchProducts().then(setProducts).catch((e) => setError(e.message)).finally(() => setLoading(false));
   }, []);
 
-  // Фильтрация по цене и категории
-  useEffect(() => {
-    let filtered = products;
-
-    // Фильтр по цене
-    filtered = filtered.filter(
-      (product) => product.price >= priceRange[0] && product.price <= priceRange[1]
-    );
-
-    // Фильтр по категории
-    if (selectedCategory !== 'All') {
-      filtered = filtered.filter((product) => product.category === selectedCategory);
-    }
-
-    setFilteredProducts(filtered);
-  }, [priceRange, selectedCategory, products]);
-
-  if (loading) {
-    return <div className="text-center py-10">Yuklanmoqda...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center py-10 text-red-500">Xato: {error}</div>;
-  }
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50, rotateX: 10 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      transition: { duration: 0.6, delay: i * 0.1, ease: 'easeOut' },
-    }),
-    hover: { scale: 1.05, y: -10, boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)' },
-    tap: { scale: 0.95 },
-  };
+  const categories = useMemo(() => ['all', ...new Set(products.map((p) => p.category))], [products]);
+  const visible = useMemo(() => products.filter((p) =>
+    p.price <= maxPrice &&
+    (category === 'all' || p.category === category) &&
+    p.name.toLowerCase().includes(query.toLowerCase())
+  ), [products, category, maxPrice, query]);
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-6 sm:mb-8 lg:mb-10">
-        Katalog
-      </h1>
-
-      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10">
-        {/* Фильтры */}
-        <motion.div
-          className="w-full lg:w-1/4 bg-white p-4 sm:p-6 rounded-lg shadow-lg"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6">
-            Filtrlar
-          </h2>
-
-          {/* Фильтр по цене */}
-          <div className="mb-6">
-            <h3 className="text-sm sm:text-base font-medium text-gray-700 mb-2">Narx bo'yicha</h3>
-            <Slider
-              range
-              min={0}
-              max={10000000}
-              defaultValue={[0, 10000000]}
-              onChange={(value) => setPriceRange(value)}
-              trackStyle={[{ background: 'linear-gradient(to right, #3b82f6, #1e40af)' }]}
-              handleStyle={[
-                {
-                  backgroundColor: '#ffffff',
-                  borderColor: '#3b82f6',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                  width: 16,
-                  height: 16,
-                  marginTop: -6,
-                },
-                {
-                  backgroundColor: '#ffffff',
-                  borderColor: '#3b82f6',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                  width: 16,
-                  height: 16,
-                  marginTop: -6,
-                },
-              ]}
-              railStyle={{ backgroundColor: '#e5e7eb', height: 6 }}
-            />
-            <div className="flex justify-between mt-3 text-sm sm:text-base text-gray-600">
-              <span>{priceRange[0].toLocaleString()} UZS</span>
-              <span>{priceRange[1].toLocaleString()} UZS</span>
-            </div>
-          </div>
-
-          {/* Фильтр по категории */}
-          <div className="mb-6 max-h-[540px]">
-            <h3 className="text-sm sm:text-base font-medium text-gray-700 mb-2">Kategoriya</h3>
-            <motion.select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full p-2 sm:p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </motion.select>
-          </div>
-        </motion.div>
-
-        {/* Список продуктов */}
-        <div className="w-full lg:w-3/4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            <AnimatePresence>
-              {filteredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  custom={index}
-                  variants={cardVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit={{ opacity: 0, y: 50 }}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="bg-white p-4 sm:p-5 rounded-lg shadow-md transition-shadow cursor-pointer"
-                >
-                  <Link to={`/product/${product.id}`}>
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-36 sm:h-40 lg:h-44 object-contain mb-3 sm:mb-4"
-                    />
-                    <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-800 mb-1 sm:mb-2 line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">
-                      {product.category}
-                    </p>
-                    <p className="text-gray-800 font-medium text-sm sm:text-base">
-                      {product.price.toLocaleString()} UZS
-                    </p>
-                  </Link>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Net Store</p><h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Каталог</h1><p className="mt-2 text-sm text-slate-500">{visible.length} товаров</p></div>
+        <Link to="/" className="text-sm font-semibold text-slate-600 hover:text-blue-600">← На главную</Link>
       </div>
-    </div>
+      <div className="mb-8 grid gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-[1fr_220px_260px]">
+        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Поиск товара..." className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+        <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500">{categories.map((item) => <option key={item} value={item}>{item === 'all' ? 'Все категории' : item}</option>)}</select>
+        <label className="flex items-center gap-3 rounded-xl border border-slate-200 px-4 py-2 text-xs text-slate-500"><span className="whitespace-nowrap">До {formatPrice(maxPrice)} UZS</span><input className="w-full" type="range" min="0" max="10000000" step="100000" value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} /></label>
+      </div>
+      {loading && <p className="py-12 text-center text-sm text-slate-500">Каталог загружается…</p>}
+      {error && <p className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</p>}
+      {!loading && !error && visible.length === 0 && <p className="rounded-xl bg-white p-10 text-center text-slate-500">Ничего не найдено.</p>}
+      {!loading && !error && visible.length > 0 && <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{visible.map((product) => <ProductCard key={product.id} product={product} compact />)}</div>}
+    </section>
   );
 }
