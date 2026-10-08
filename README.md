@@ -4,7 +4,7 @@ A responsive e-commerce frontend built with React, Vite, React Router, Tailwind 
 
 **Live Demo:** https://net-store-dev.vercel.app/
 
-![Net Store screenshot](docs/screenshot.png)
+<!-- Add a current project screenshot at docs/screenshot.png -->
 
 ## Features
 
