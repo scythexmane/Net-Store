@@ -13,8 +13,6 @@ function normalizeProduct(product) {
   };
 }
 
-let productsPromise;
-
 async function request(url, signal) {
   const response = await fetch(url, { signal });
 
@@ -25,17 +23,9 @@ async function request(url, signal) {
   return response.json();
 }
 
-export function fetchProducts({ signal } = {}) {
-  if (!productsPromise) {
-    productsPromise = request(API_URL, signal)
-      .then((products) => products.map(normalizeProduct))
-      .catch((error) => {
-        productsPromise = null;
-        throw error;
-      });
-  }
-
-  return productsPromise;
+export async function fetchProducts({ signal } = {}) {
+  const products = await request(API_URL, signal);
+  return products.map(normalizeProduct);
 }
 
 export async function fetchProduct(productId, { signal } = {}) {
