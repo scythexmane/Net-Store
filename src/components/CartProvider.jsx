@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { CartContext } from '../hooks/useCart.js';
 
 const STORAGE_KEY = 'net-store-cart';
@@ -26,7 +26,7 @@ function readStoredCart() {
 export default function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState(readStoredCart);
 
-  const updateCart = (updater) => {
+  const updateCart = useCallback((updater) => {
     setCartItems((currentItems) => {
       const nextItems = updater(currentItems);
 
@@ -38,39 +38,48 @@ export default function CartProvider({ children }) {
 
       return nextItems;
     });
-  };
+  }, []);
 
-  const addToCart = (product) => {
-    updateCart((items) => {
-      const existingProduct = items.find((item) => item.id === product.id);
+  const addToCart = useCallback(
+    (product) => {
+      updateCart((items) => {
+        const existingProduct = items.find((item) => item.id === product.id);
 
-      if (existingProduct) {
+        if (existingProduct) {
+          return items.map((item) =>
+            item.id === product.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item,
+          );
+        }
+
+        return [...items, { ...product, quantity: 1 }];
+      });
+    },
+    [updateCart],
+  );
+
+  const removeFromCart = useCallback(
+    (productId) => {
+      updateCart((items) => items.filter((item) => item.id !== productId));
+    },
+    [updateCart],
+  );
+
+  const updateQuantity = useCallback(
+    (productId, quantity) => {
+      updateCart((items) => {
+        if (quantity <= 0) {
+          return items.filter((item) => item.id !== productId);
+        }
+
         return items.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
+          item.id === productId ? { ...item, quantity } : item,
         );
-      }
-
-      return [...items, { ...product, quantity: 1 }];
-    });
-  };
-
-  const removeFromCart = (productId) => {
-    updateCart((items) => items.filter((item) => item.id !== productId));
-  };
-
-  const updateQuantity = (productId, quantity) => {
-    updateCart((items) => {
-      if (quantity <= 0) {
-        return items.filter((item) => item.id !== productId);
-      }
-
-      return items.map((item) =>
-        item.id === productId ? { ...item, quantity } : item,
-      );
-    });
-  };
+      });
+    },
+    [updateCart],
+  );
 
   const value = useMemo(
     () => ({
@@ -79,7 +88,7 @@ export default function CartProvider({ children }) {
       removeFromCart,
       updateQuantity,
     }),
-    [cartItems],
+    [cartItems, addToCart, removeFromCart, updateQuantity],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
