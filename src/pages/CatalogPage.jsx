@@ -113,8 +113,8 @@ export default function CatalogPage() {
 
       {status === 'loading' && (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 8 }, (_, index) => (
-            <ProductSkeleton key={index} compact />
+          {['catalog-skeleton-1', 'catalog-skeleton-2', 'catalog-skeleton-3', 'catalog-skeleton-4', 'catalog-skeleton-5', 'catalog-skeleton-6', 'catalog-skeleton-7', 'catalog-skeleton-8'].map((skeletonId) => (
+            <ProductSkeleton key={skeletonId} compact />
           ))}
         </div>
       )}
