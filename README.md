@@ -1,47 +1,69 @@
 # Net Store
 
-A responsive e-commerce frontend built with React and Vite.
+A responsive e-commerce frontend built with React, Vite, React Router, Tailwind CSS, and Framer Motion.
 
-## What it demonstrates
+**Live Demo:** https://net-store-dev.vercel.app/
 
-- React component architecture and reusable product cards
-- React Router navigation
-- Shared cart state with quantity controls
-- REST API integration with Fake Store API
-- Catalog search, category filtering and price filtering
-- Responsive UI with Tailwind CSS
-- Lightweight motion with Framer Motion
-- Loading and error states
+![Net Store screenshot](docs/screenshot.png)
+
+## Features
+
+- Responsive product catalog
+- Product search, category filtering, and price filtering
+- Product detail pages
+- Persistent cart with quantity controls
+- Loading, error, and empty states
+- Accessible navigation and form controls
+- Lightweight page and product animations
+- Fake Store API integration
 
 ## Tech stack
 
-React · Vite · React Router · Tailwind CSS · Framer Motion
+- React
+- Vite
+- React Router
+- Tailwind CSS
+- Framer Motion
+- Fake Store API
 
-## Run locally
+## Getting started
 
-```bash
-npm install
-npm run dev
-```
+Requirements: Node.js 18+ and npm.
 
-Production build:
+    npm install
+    npm run dev
 
-```bash
-npm run build
-npm run preview
-```
+Create a production build with:
+
+    npm run build
+    npm run preview
+
+Quality checks:
+
+    npm run lint
+    npm run format:check
 
 ## Project structure
 
-```text
-src/
-├── components/      # Shared UI and cart state
-├── data/            # API and product formatting
-├── pages/            # Route-level screens
-├── App.jsx           # Application routes and layout
-└── index.css         # Global styles
-```
+    src/
+    ├── components/   # Shared UI components
+    ├── data/         # API requests and product formatting
+    ├── hooks/        # Shared application state
+    ├── pages/        # Route-level screens
+    ├── App.jsx       # Application routes and layout
+    └── index.css     # Global styles and accessibility defaults
 
-## Notes
+## What I learned
 
-This is a portfolio/learning project. Product data comes from the public Fake Store API, and checkout is intentionally a frontend-only demonstration.
+This project helped me practice React component composition, client-side routing, API requests, shared state, localStorage persistence, responsive layouts, loading and error handling, and accessible UI states.
+
+## Future improvements
+
+- Connect checkout and contact forms to a backend
+- Add automated component and end-to-end tests
+- Replace the demo API with a real product service
+- Add pagination and server-side filtering
+
+## Note
+
+Net Store is a learning project. Product data comes from the public Fake Store API, and checkout is intentionally not implemented.
