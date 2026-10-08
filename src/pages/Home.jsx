@@ -105,8 +105,8 @@ export default function HomePage() {
 
         {status === 'loading' && (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }, (_, index) => (
-              <ProductSkeleton key={index} />
+            {['home-skeleton-1', 'home-skeleton-2', 'home-skeleton-3', 'home-skeleton-4'].map((skeletonId) => (
+              <ProductSkeleton key={skeletonId} />
             ))}
           </div>
         )}
