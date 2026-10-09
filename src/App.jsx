@@ -1,19 +1,20 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/Home.jsx';
-import CatalogPage from './pages/CatalogPage.jsx';
-import ProductPage from './components/ProductPage.jsx';
-import CartPage from './pages/CartPage.jsx';
-import AboutPage from './pages/About.jsx';
-import ContactPage from './pages/Contact.jsx';
-import { CartProvider } from './components/CartContext.jsx';
+import CartProvider from './components/CartProvider.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
+import CartPage from './pages/CartPage.jsx';
+import CatalogPage from './pages/CatalogPage.jsx';
+import ContactPage from './pages/Contact.jsx';
+import HomePage from './pages/Home.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import AboutPage from './pages/About.jsx';
+import ProductPage from './pages/ProductPage.jsx';
 
 export default function App() {
   return (
     <BrowserRouter>
       <CartProvider>
-        <div className="min-h-screen bg-slate-50 text-slate-950">
+        <div className="min-h-screen bg-surface text-ink">
           <Header />
           <main>
             <Routes>
@@ -23,7 +24,8 @@ export default function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="/404" element={<NotFoundPage />} />
+              <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
           </main>
           <Footer />

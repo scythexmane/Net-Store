@@ -1,39 +1,36 @@
 const API_URL = 'https://fakestoreapi.com/products';
+const PRICE_RATE = 12000;
 
-const normalizeProduct = (product) => ({
-  id: product.id,
-  name: product.title,
-  description: product.description,
-  price: Math.round(product.price * 12000),
-  originalPrice: Math.round(product.price * 12000),
-  image: product.image,
-  category: product.category,
-  rating: product.rating ?? { rate: 0, count: 0 },
-});
-
-let productsPromise;
-
-export async function fetchProducts() {
-  if (!productsPromise) {
-    productsPromise = fetch(API_URL)
-      .then((response) => {
-        if (!response.ok) throw new Error('Не удалось загрузить каталог');
-        return response.json();
-      })
-      .then((products) => products.map(normalizeProduct))
-      .catch((error) => {
-        productsPromise = null;
-        throw error;
-      });
-  }
-
-  return productsPromise;
+function normalizeProduct(product) {
+  return {
+    id: product.id,
+    name: product.title,
+    description: product.description,
+    price: Math.round(product.price * PRICE_RATE),
+    image: product.image,
+    category: product.category,
+    rating: product.rating ?? { rate: 0, count: 0 },
+  };
 }
 
-export async function fetchProduct(id) {
-  const response = await fetch(`${API_URL}/${id}`);
-  if (!response.ok) throw new Error('Mahsulot topilmadi');
-  return normalizeProduct(await response.json());
+async function request(url, signal) {
+  const response = await fetch(url, { signal });
+
+  if (!response.ok) {
+    throw new Error('Unable to load products right now.');
+  }
+
+  return response.json();
+}
+
+export async function fetchProducts({ signal } = {}) {
+  const products = await request(API_URL, signal);
+  return products.map(normalizeProduct);
+}
+
+export async function fetchProduct(productId, { signal } = {}) {
+  const product = await request(`${API_URL}/${productId}`, signal);
+  return normalizeProduct(product);
 }
 
 export function formatPrice(value) {
